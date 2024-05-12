@@ -57,13 +57,3 @@ provider "helm" {
     cluster_ca_certificate = base64decode(data.azurerm_kubernetes_cluster.default.kube_config.0.cluster_ca_certificate)
   }
 }
-
-terraform {
-  cloud {
-    organization = "sandbox-01"
-
-    workspaces {
-      name = "azure-sandbox"
-    }
-  }
-}
