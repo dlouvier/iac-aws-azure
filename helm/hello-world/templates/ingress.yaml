@@ -3,13 +3,20 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
+    {{ if eq .Values.cloud "aws" }}
     alb.ingress.kubernetes.io/group.name: default-alb
-    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/scheme: internet-facing # provision external IP
     alb.ingress.kubernetes.io/target-type: ip
     kubernetes.io/ingress.class: alb
+    {{ end }}
   name: hello-world
 spec:
+  {{ if eq .Values.cloud "aws" }}
   ingressClassName: alb
+  {{ end }}
+  {{ if eq .Values.cloud "azure" }}
+  ingressClassName: azure-application-gateway
+  {{ end }}
   rules:
     - host: {{ .Values.hostname }}
       http:
