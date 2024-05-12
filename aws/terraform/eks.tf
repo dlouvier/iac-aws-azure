@@ -6,17 +6,15 @@ locals {
   azs      = slice(data.aws_availability_zones.available.names, 0, 3)
   vpc_cidr = "10.0.0.0/16"
   admin_user = var.admin_user_arn == null ? {} : {
-    default = {
-      dlouvier = {
-        kubernetes_groups = []
-        principal_arn     = "${var.admin_user_arn}"
+    dlouvier = {
+      kubernetes_groups = []
+      principal_arn     = "${var.admin_user_arn}"
 
-        policy_associations = {
-          myself = {
-            policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
-            access_scope = {
-              type = "cluster"
-            }
+      policy_associations = {
+        myself = {
+          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+          access_scope = {
+            type = "cluster"
           }
         }
       }
