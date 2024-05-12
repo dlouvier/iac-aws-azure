@@ -4,6 +4,18 @@ terraform {
       source  = "hashicorp/aws"
       version = "5.49.0"
     }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "2.30.0"
+    }
+    dns = {
+      source  = "hashicorp/dns"
+      version = "3.4.1"
+    }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "2.13.2"
+    }
   }
 }
 

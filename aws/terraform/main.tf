@@ -135,9 +135,14 @@ resource "helm_release" "default-ingress" {
   chart      = "../../helm/default-ingress"
   namespace  = "default"
   version    = "0.1.0"
+
+  set {
+    name  = "cloud"
+    value = "aws"
+  }
 }
 
-data "kubernetes_ingress_v1" "alb_hostname" {
+data "kubernetes_ingress_v1" "lb_hostname" {
   depends_on = [helm_release.default-ingress]
   metadata {
     name      = "default-ingress"
@@ -145,9 +150,13 @@ data "kubernetes_ingress_v1" "alb_hostname" {
   }
 }
 
-data "dns_a_record_set" "alb_address_ip" {
+data "dns_a_record_set" "lb_address_ip" {
   depends_on = [data.kubernetes_ingress_v1.alb_hostname]
-  host       = data.kubernetes_ingress_v1.alb_hostname.status.0.load_balancer.0.ingress.0.hostname
+  host       = data.kubernetes_ingress_v1.lb_hostname.status.0.load_balancer.0.ingress.0.hostname
+}
+
+locals {
+  ingress_hostname = "${data.dns_a_record_set.lb_address_ip.addrs[0]}.nip.io"
 }
 
 resource "helm_release" "hello-world" {
@@ -159,6 +168,15 @@ resource "helm_release" "hello-world" {
 
   set {
     name  = "hostname"
-    value = "${data.dns_a_record_set.alb_address_ip.addrs[0]}.nip.io"
+    value = "${local.ingress_hostname}.nip.io"
   }
+
+  set {
+    name  = "cloud"
+    value = "aws"
+  }
+}
+
+output "url" {
+  value = "The URL to access to the hello-world application is http://${local.ingress_hostname}"
 }
