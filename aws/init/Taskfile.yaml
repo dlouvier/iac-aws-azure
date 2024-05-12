@@ -1,0 +1,18 @@
+version: "3"
+
+tasks:
+  default:
+    cmds:
+      - echo "Check if AWS CLI is installed"
+      - command -v aws || { echo "AWS CLI is not installed"; exit 1; }
+      - echo "Check if AWS CLI is configured"
+      - aws configure list || { echo "AWS CLI is not configured"; exit 1; }
+      - | 
+        aws iam create-open-id-connect-provider \
+        --url https://app.terraform.io \
+        --thumbprint-list 9e99a48a9960b14926bb7f3b02e22da2b0ab7280 \
+        --client-id-list aws.workload.identity
+      - aws iam create-role --role-name SandboxTestRole --assume-role-policy-document file://dynamic-creds.json
+      - aws iam put-role-policy --role-name SandboxTestRole --policy-name CustomEKSSandbox --policy-document file://eks-role.json
+
+
