@@ -23,13 +23,9 @@ provider "aws" {
   region = "eu-central-1"
 }
 
-terraform {
-  backend "remote" {
-    organization = "sandbox-01"
-
-    workspaces {
-      name = "aws-sandbox"
-    }
+provider "dns" {
+  update {
+    server = "1.1.1.1"
   }
 }
 
@@ -41,12 +37,6 @@ data "aws_eks_cluster" "default" {
 data "aws_eks_cluster_auth" "default" {
   depends_on = [module.eks.cluster_name]
   name       = module.eks.cluster_name
-}
-
-provider "dns" {
-  update {
-    server = "1.1.1.1"
-  }
 }
 
 provider "kubernetes" {
