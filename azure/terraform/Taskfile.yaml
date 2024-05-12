@@ -1,0 +1,8 @@
+version: "3"
+
+tasks:
+  default:
+    cmds:
+      - az login
+      - terraform init
+      - terraform apply
