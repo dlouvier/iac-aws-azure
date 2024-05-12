@@ -59,7 +59,3 @@ The `default-ingress` chart is used because the Application Load Balancer is pro
 ### Security
 
 The security policies in this exercise are intentionally permissive for demonstration purposes. However, in a real-world scenario, it is important to have more restrictive security policies in place.
-
-```
-
-```
