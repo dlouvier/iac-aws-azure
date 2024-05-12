@@ -51,7 +51,7 @@ data "kubernetes_ingress_v1" "lb_hostname" {
 }
 
 data "dns_a_record_set" "lb_address_ip" {
-  depends_on = [data.kubernetes_ingress_v1.alb_hostname]
+  depends_on = [data.kubernetes_ingress_v1.lb_hostname]
   host       = data.kubernetes_ingress_v1.lb_hostname.status.0.load_balancer.0.ingress.0.hostname
 }
 
@@ -60,7 +60,7 @@ locals {
 }
 
 resource "helm_release" "hello-world" {
-  depends_on = [data.dns_a_record_set.alb_address_ip]
+  depends_on = [data.dns_a_record_set.lb_address_ip]
   name       = "hello-world"
   chart      = "../../helm/hello-world"
   namespace  = "default"

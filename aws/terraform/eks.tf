@@ -5,7 +5,7 @@ data "aws_availability_zones" "available" {}
 locals {
   azs      = slice(data.aws_availability_zones.available.names, 0, 3)
   vpc_cidr = "10.0.0.0/16"
-  admin_user = var.admin_user_arn ? {} : {
+  admin_user = var.admin_user_arn == null ? {} : {
     default = {
       dlouvier = {
         kubernetes_groups = []
