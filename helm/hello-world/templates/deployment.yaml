@@ -27,5 +27,15 @@ spec:
             - name: http
               containerPort: 80
               protocol: TCP
+          volumeMounts:
+          - name: hello-world-vol
+            mountPath: /usr/share/nginx/html/
+      volumes:
+        - name: hello-world-vol
+          configMap:
+            name: hello-world
+            items:
+              - key: index.html
+                path: index.html
 ---
 

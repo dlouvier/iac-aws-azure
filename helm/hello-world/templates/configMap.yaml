@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: hello-world
+data:
+  index.html: |
+    This site is loading from {{ .Values.cloud }} cloud
+---
